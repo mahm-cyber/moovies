@@ -9,13 +9,35 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            Tab {
+                HomeView()
+            } label: {
+                Image(systemName: Constants.homeIcon)
+            }
+
+            Tab {
+                Text(Constants.upcomingString)
+            } label: {
+                Image(systemName: Constants.upcomingIcon)
+            }
+
+            Tab {
+                Text(Constants.searchString)
+            } label: {
+                Image(systemName: Constants.searchIcon)
+            }
+
+            Tab {
+                Text(Constants.downloadString)
+            } label: {
+                Image(systemName: Constants.downloadIcon)
+            }
         }
-        .padding()
+        .onAppear {
+            print(APIConfig.shared.tmdbAPIKey)
+            print(APIConfig.shared.tmdbBaseURL)
+        }
     }
 }
 
