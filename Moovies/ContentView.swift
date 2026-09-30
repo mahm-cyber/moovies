@@ -17,7 +17,7 @@ struct ContentView: View {
             }
 
             Tab {
-                Text(Constants.upcomingString)
+                UpcomingView()
             } label: {
                 Image(systemName: Constants.upcomingIcon)
             }
