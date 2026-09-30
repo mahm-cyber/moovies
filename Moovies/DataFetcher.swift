@@ -10,25 +10,28 @@ import Foundation
 enum MediaTypes {
     case trendingMovies
     case topRatedMovies
+    case upComingMovies
     case trendingTvs
     case topRatedTvs
     
     var type : String {
         switch self {
         case .trendingMovies, .trendingTvs:
-            return  "trending"
-            
+            return  "trending" 
         case .topRatedMovies, .topRatedTvs:
             return  "top_rated"
+        case .upComingMovies:
+            return "upcoming"
         }
     }
     
     var media: String {
         switch self {
-        case .trendingMovies, .topRatedMovies:
+        case .trendingMovies, .topRatedMovies, .upComingMovies:
             return   "movie"
         case .trendingTvs, .topRatedTvs:
             return "tv"
+      
         }
     }
 }
@@ -125,9 +128,9 @@ struct DataFetcher {
         
         
         if type == "trending" {
-            path = "3/trending/\(media)/day"
-        } else if type == "top_rated" {
-            path = "3/\(media)/top_rated"
+            path = "3/\(type)/\(media)/day"
+        } else if type == "top_rated" || type == "upcoming"{
+            path = "3/\(media)/\(type)"
         } else {
             throw NetworkError.urlBuildFailed
         }
