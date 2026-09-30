@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    
     let viewModel = ViewModel()
     @State private var titleDetailPath = NavigationPath()
     
@@ -66,24 +67,31 @@ struct HomeView: View {
                             
                             HorizontalListView(
                                 header: Constants.trendingMovieString,
-                                titles: viewModel.trendingMovies
-                            )
+                                titles: viewModel.trendingMovies,
+                             
+                            ) { title in
+                                titleDetailPath.append(title)
+                            }
                             HorizontalListView(
                                 header: Constants.trendingTVString,
                                 titles: viewModel
-                                    .trendingTvs)
+                                    .trendingTvs) { title in
+                                        titleDetailPath.append(title)
+                                    }
                             HorizontalListView(
                                 header: Constants.topRatedMovieString,
                                 titles: viewModel
-                                    .topRatedMovies)
+                                    .topRatedMovies){ title in
+                                        titleDetailPath.append(title)
+                                    }
                             HorizontalListView(
                                 header: Constants.topRatedTVString,
                                 titles: viewModel
-                                    .topRatedTvs)
+                                    .topRatedTvs){ title in
+                                        titleDetailPath.append(title)
+                                    }
                         }
-                        .navigationDestination(for: Title.self) { title in
-                            TitleDetailView(title: title)
-                        }
+                       
                     case .failed(let underlyingError):
                         Text("Error: \(underlyingError.localizedDescription)")
                     }
@@ -92,9 +100,15 @@ struct HomeView: View {
                 .task {
                     await viewModel.getTitles()
                 }
+                .navigationDestination(for: Title.self) { title in
+                    TitleDetailView(title: title)
+                }
             }
         }
+       
     }
+  
+    
 }
 
 #Preview {
