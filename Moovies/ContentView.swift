@@ -23,7 +23,7 @@ struct ContentView: View {
             }
 
             Tab {
-                Text(Constants.searchString)
+                SearchView()
             } label: {
                 Image(systemName: Constants.searchIcon)
             }

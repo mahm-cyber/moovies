@@ -13,6 +13,8 @@ enum MediaTypes {
     case upComingMovies
     case trendingTvs
     case topRatedTvs
+    case searchMovies
+    case searchTvs
     
     var type : String {
         switch self {
@@ -22,14 +24,16 @@ enum MediaTypes {
             return  "top_rated"
         case .upComingMovies:
             return "upcoming"
+        case .searchTvs, .searchMovies:
+            return "search"
         }
     }
     
     var media: String {
         switch self {
-        case .trendingMovies, .topRatedMovies, .upComingMovies:
+        case .trendingMovies, .topRatedMovies, .upComingMovies, .searchMovies:
             return   "movie"
-        case .trendingTvs, .topRatedTvs:
+        case .trendingTvs, .topRatedTvs, .searchTvs:
             return "tv"
       
         }
@@ -115,7 +119,7 @@ struct DataFetcher {
         return try decoder.decode(type, from: data)
     }
     
-    private func buildURL(media: String, type: String) throws -> URL? {
+    private func buildURL(media: String, type: String, searchPhrase: String? = nil) throws -> URL? {
         guard let baseURL = tmdbBaseURL else {
             throw NetworkError.missingConfig
         }
@@ -131,13 +135,24 @@ struct DataFetcher {
             path = "3/\(type)/\(media)/day"
         } else if type == "top_rated" || type == "upcoming"{
             path = "3/\(media)/\(type)"
+        } else if type == "search" {
+            path = "3/\(type)/\(media)"
         } else {
             throw NetworkError.urlBuildFailed
         }
         
+        var urlQueryItems = [
+            URLQueryItem(name: "api_key", value: apiKey)
+        ]
+        
+        if let searchPhrase {
+            urlQueryItems
+                .append(URLQueryItem(name: "query", value: searchPhrase))
+        }
+        
         guard   let url = URL(string: baseURL)?
             .appending(path: path)
-            .appending(queryItems: [URLQueryItem(name: "api_key", value: apiKey)])
+            .appending(queryItems: urlQueryItems)
         else {
             throw NetworkError.urlBuildFailed
         }
