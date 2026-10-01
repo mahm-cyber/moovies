@@ -24,6 +24,7 @@ struct Constants {
     static let tvSearchString = "Tv Search"
     static let moviePlaceHolderString = "Search for a Movie"
     static let tvPlaceHolderString = "Search for a Tv Show"
+    static let noTitlesFound = "No result found"
 
     //MARK: - App Icons
     static let homeIcon = "house"

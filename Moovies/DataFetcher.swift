@@ -48,10 +48,10 @@ struct DataFetcher {
     let youtubeAPIKey = APIConfig.shared?.youtubeAPIKey
     
     //MARK: - media= movie, media= top_rated
-    func fetchTitles(for type:MediaTypes) async throws -> [Title] {
+    func fetchTitles(for type:MediaTypes, with title: String? = nil) async throws -> [Title] {
         
         
-        let fetchTitlesURL = try buildURL(media: type.media, type: type.type)
+        let fetchTitlesURL = try buildURL(media: type.media, type: type.type,searchPhrase: title  )
         guard let fetchTitlesURL = fetchTitlesURL else {
             throw NetworkError.urlBuildFailed
         }
@@ -60,7 +60,8 @@ struct DataFetcher {
 
         var titles = try await  fetchAndDecode(
             url: fetchTitlesURL,
-            type: TMDBAPIObject.self
+            type: TMDBAPIObject.self,
+            
         ).results
         Constants.addPosterPath(to: &titles)
         return titles

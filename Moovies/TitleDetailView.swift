@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TitleDetailView: View {
     let title: Title
@@ -14,6 +15,7 @@ struct TitleDetailView: View {
     }
     
     let viewModel = ViewModel()
+    @Environment(\.modelContext) var modelContext
     
     var body: some View {
         GeometryReader { geo in
@@ -36,6 +38,23 @@ struct TitleDetailView: View {
                         
                         Text(title.overview ?? "")
                             .padding(5)
+                        
+                        HStack {
+                            Spacer()
+                            
+                            Button {
+                                let saveTitle = title
+                                saveTitle.title = titleName
+                                modelContext.insert(saveTitle)
+                                try? modelContext.save()
+                            } label: {
+                                Text(Constants.downloadString)
+                                    .ghostButton()
+                            }
+                            
+                            Spacer()
+                        }
+                       
                     }
                 }
             case .failed(let underlyingError):
