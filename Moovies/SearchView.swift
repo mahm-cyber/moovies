@@ -23,10 +23,8 @@ struct SearchView: View {
             ScrollView {
                 if let error = searchViewModel.errorMessage {
                     Text(error)
-                        .foregroundStyle(.red)
-                        .padding()
-                        .background(.ultraThinMaterial)
-                        .clipShape(.rect(cornerRadius: 10))
+                        .errorMessage()
+                    
                 }
                 if titles.isEmpty {
                     ContentUnavailableView(

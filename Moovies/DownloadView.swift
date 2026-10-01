@@ -11,9 +11,10 @@ import SwiftData
 
 struct DownloadView: View {
     @Query(sort: \Title.title) var savedTitles: [Title]
+    @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             if savedTitles.isEmpty {
                 Text("No Downloads")
                     .padding()

@@ -9,9 +9,10 @@ import SwiftUI
 
 struct UpcomingView: View {
     let viewModel = ViewModel()
+    @State private var navigationPath = NavigationPath()
     
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             GeometryReader { geo in
                 switch viewModel.upcomingStatus {
                 case .notStarted:
@@ -26,8 +27,12 @@ struct UpcomingView: View {
                     )
                 case .failed(let underlyingError):
                     Text(underlyingError.localizedDescription)
+                        .errorMessage()
+                        .frame(width: geo.size.width, height: geo.size.height)
                 }
             }
+            .navigationTitle(Constants.upcomingString)
+            .toolbarTitleDisplayMode(.inline)
             .task {
                 await viewModel.getUpcomingMovies()
             }

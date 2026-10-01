@@ -97,6 +97,8 @@ struct HomeView: View {
                        
                     case .failed(let underlyingError):
                         Text("Error: \(underlyingError.localizedDescription)")
+                            .errorMessage()
+                            .frame(width: geo.size.width, height: geo.size.height * 0.85)
                     }
                     
                 }
